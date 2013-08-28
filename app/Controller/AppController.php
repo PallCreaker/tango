@@ -47,4 +47,17 @@ class AppController extends Controller {
         
         return $error;
     }
+    
+    public function error500($description) {
+        $error = array(
+            'code' => 500,
+            'data' => array(
+                'text' => 'Internal Server Error',
+                'description' => $description
+            )
+        );
+        
+        return $error;
+    }
+    
 }
