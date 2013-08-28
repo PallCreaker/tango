@@ -32,4 +32,19 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+    public function beforeFilter() {
+        
+    }
+    
+    public function error404($description) {
+        $error = array(
+            'code' => 404,
+            'data' => array(
+                'text' => 'Not Found',
+                'description' => $description
+            )
+        );
+        
+        return $error;
+    }
 }
