@@ -36,6 +36,8 @@ class AppController extends Controller {
         
     }
     
+    public $components = array('DebugKit.Toolbar');
+    
     public function error404($description) {
         $error = array(
             'code' => 404,
@@ -44,7 +46,6 @@ class AppController extends Controller {
                 'description' => $description
             )
         );
-        
         return $error;
     }
     
@@ -55,8 +56,7 @@ class AppController extends Controller {
                 'text' => 'Internal Server Error',
                 'description' => $description
             )
-        );
-        
+        );        
         return $error;
     }
     
