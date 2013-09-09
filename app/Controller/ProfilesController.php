@@ -2,7 +2,7 @@
 
 class ProfilesController extends AppController {
     public $name = 'Profiles';
-    public $uses = array('Profile', 'User');
+    public $uses = array('Profile');
     public $layout = 'json';
 
     public function beforeFilter() {
@@ -11,11 +11,15 @@ class ProfilesController extends AppController {
     
     public function edit ($user_id = null) {
         $this->Profile->id = $user_id;
-        if ($this->request->is('post') && $this->User->exists()) {
+        if ($this->request->is('post') && $this->Profile->exists()) {
             if ($this->Profile->save(json_decode($this->request->data))) {
                 echo 'プロフィールが正しく更新されました!';
+                $profile = $this->Profile->get_user_profile($user_id);
+                $this->set('profile', $profile);
             }
         } else {
+            $profile = array('hoge' => 'hoge');
+            $this->set('profile', json_encode($profile));
             echo '指定されたユーザーは存在しません。';
         }
     }

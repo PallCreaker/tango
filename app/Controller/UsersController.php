@@ -14,9 +14,9 @@ class UsersController extends AppController {
     public function register() {
         if ($this->request->is('post')) {
             $this->request->data['User']['password'] = hash('md5', $this->request->data['User']['password']);
-            if ($this->User->save(json_decode($this->request->data))) {
+            if ($this->User->save($this->request->data)) {
                 //登録したユーザーの情報をJSON形式で返す
-                $user = json_encode($this->User->get_specify_user($this->User->getLastInsertID()));
+                $user = $this->User->get_specify_user($this->User->getLastInsertID());
                 $this->set('user', $user);
             }
         }
@@ -25,10 +25,10 @@ class UsersController extends AppController {
     public function get_user($user_id = null) {
         $this->User->id = $user_id;
         if($this->User->exists()) {
-            $user = json_encode($this->User->get_specify_user($user_id));
+            $user = $this->User->get_specify_user($user_id);
             $this->set('user', $user);
         } else {
-            $error = json_encode($this->error404('指定したidのユーザーは存在しません'));
+            $error = $this->error404('指定したidのユーザーは存在しません');
             $this->set('error', $error);
         }
     }

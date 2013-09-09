@@ -1,5 +1,5 @@
 <?php
-echo $this->Form->create('User', array('action' => 'add'));
+echo $this->Form->create('User', array('action' => 'register'));
 echo $this->Form->input('username');
 echo $this->Form->input('password');
 echo $this->Form->input('screen_name');

@@ -41,6 +41,6 @@ class User extends AppModel {
             'recursive' => -1
         ));
         
-        return $user;
+        return json_encode($user);
     }
 }
