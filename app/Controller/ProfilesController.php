@@ -4,13 +4,21 @@ class ProfilesController extends AppController {
     public $name = 'Profiles';
     public $uses = array('Profile');
     public $layout = 'json';
+    
+    public $belongsTo = array(
+        'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id',
+            'dependent' => true
+        )
+    );
 
     public function beforeFilter() {
         parent::beforeFilter();
     }
     
     public function edit ($user_id = null) {
-        $this->Profile->id = $user_id;
+        $this->Profile->user_id = $user_id;
         if ($this->request->is('post') && $this->Profile->exists()) {
             if ($this->Profile->save(json_decode($this->request->data))) {
                 echo 'プロフィールが正しく更新されました!';

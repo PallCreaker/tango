@@ -3,7 +3,7 @@
 class UsersController extends AppController {
 
     public $name = 'Users';
-    public $uses = array('User');
+    public $uses = array('User', 'Profile');
     public $layout = 'json';
 
     public function beforeFilter() {
@@ -15,6 +15,7 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $this->request->data['User']['password'] = hash('md5', $this->request->data['User']['password']);
             if ($this->User->save($this->request->data)) {
+                $this->Profile->
                 //登録したユーザーの情報をJSON形式で返す
                 $user = $this->User->get_specify_user($this->User->getLastInsertID());
                 $this->set('user', $user);
@@ -32,9 +33,10 @@ class UsersController extends AppController {
             $this->set('error', $error);
         }
     }
-    //ユーザー削除
+    //ユーザー削除（今は、statusを0にして、削除したことにする仕様＝＞データを残す）
     public function delete ($user_id = null) {
-        $data = array('User', array('id' => $user_id, 'status' => 0));
+        $this->User->id = $user_id;
+        $data = array('status' => 0);
         $this->User->save($data);
     }
 }
