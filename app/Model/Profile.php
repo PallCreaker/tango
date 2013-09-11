@@ -1,7 +1,7 @@
 <?php
 
 class Profile extends AppModel {
-    public $name = 'profile';
+    public $name = 'Profile';
     
     public function get_user_profile($user_id = null) {
         $this->Profile->user_id = $user_id;
@@ -11,6 +11,6 @@ class Profile extends AppModel {
             'recursive' => -1
         ));
         
-        return json_encode($profile);
+        return $profile;
     }
 }

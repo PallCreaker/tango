@@ -15,10 +15,17 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $this->request->data['User']['password'] = hash('md5', $this->request->data['User']['password']);
             if ($this->User->save($this->request->data)) {
-                $this->Profile->
-                //登録したユーザーの情報をJSON形式で返す
+                //登録したユーザーの情報を配列で返す
                 $user = $this->User->get_specify_user($this->User->getLastInsertID());
-                $this->set('user', $user);
+                debug($user);
+                //ユーザーIDをprofilesにしまう
+                $profile = array(
+                    'user_id' => $user['User']['id']
+                );
+                debug($profile);
+                $this->Profile->save($profile);
+                //最後にユーザー情報をJSONで返す
+                $this->set('user', json_decode($user));
             }
         }
     }
