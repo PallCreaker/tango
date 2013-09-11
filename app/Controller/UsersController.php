@@ -25,7 +25,7 @@ class UsersController extends AppController {
                 debug($profile);
                 $this->Profile->save($profile);
                 //最後にユーザー情報をJSONで返す
-                $this->set('user', json_decode($user));
+                $this->set('user', json_encode($user));
             }
         }
     }
