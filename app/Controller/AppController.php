@@ -33,10 +33,10 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
     public function beforeFilter() {
-        
+    
     }
     
-    public $components = array('DebugKit.Toolbar');
+    public $components = array('DebugKit.Toolbar', 'Session');
     
     public function error404($description) {
         $error = array(

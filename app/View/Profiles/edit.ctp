@@ -8,3 +8,5 @@ echo $this->Form->input('message', array('label' => 'messageを入力してく�
 echo $this->Form->submit('Edit');
 echo $this->Form->end();
 ?>
+
+<?php debug($profile);?>

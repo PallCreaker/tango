@@ -8,3 +8,4 @@ echo $this->Form->end();
 ?>
 
 <?php echo $user;?>
+<?php debug($user);?>

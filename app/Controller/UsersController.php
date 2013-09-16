@@ -17,33 +17,47 @@ class UsersController extends AppController {
             if ($this->User->save($this->request->data)) {
                 //登録したユーザーの情報を配列で返す
                 $user = $this->User->get_specify_user($this->User->getLastInsertID());
-                debug($user);
                 //ユーザーIDをprofilesにしまう
                 $profile = array(
                     'user_id' => $user['User']['id']
                 );
-                debug($profile);
-                $this->Profile->save($profile);
+          
+                if ($this->Profile->save($profile)) {
+                    echo 'プロフィールにもidをしまいました';
+                } else {
+                    echo 'プロフィールにidをしまうのをみすりました';
+                }
                 //最後にユーザー情報をJSONで返す
-                $this->set('user', json_encode($user));
+                if ($user != null) {
+                    $this->set('user', json_encode($user));
+                } else {
+                    echo '$userが空です';
+                }
+            } else {
+                echo 'ユーザー情報を保存できませんでした';
             }
+        } else {
+            echo 'リクエストがPOSTではありません';
         }
     }
+
     //特定のユーザー情報を返す
     public function get_user($user_id = null) {
         $this->User->id = $user_id;
-        if($this->User->exists()) {
+        if ($this->User->exists()) {
             $user = $this->User->get_specify_user($user_id);
-            $this->set('user', $user);
+            $this->set('user', json_encode($user));
         } else {
             $error = $this->error404('指定したidのユーザーは存在しません');
             $this->set('error', $error);
         }
     }
+
     //ユーザー削除（今は、statusを0にして、削除したことにする仕様＝＞データを残す）
-    public function delete ($user_id = null) {
+    public function delete($user_id = null) {
         $this->User->id = $user_id;
         $data = array('status' => 0);
         $this->User->save($data);
     }
+
 }
