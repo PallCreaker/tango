@@ -14,7 +14,16 @@ class ProfilesController extends AppController {
         $this->Profile->id = $profile_id;
         
         if($this->request->is('post')){
-            $this->Profile->save($this->request->data);
+            if($this->Profile->save($this->request->data)){
+                $error = json_encode($this->error200('プロフィールが正しく更新されました'));
+                $this->set('error', $error);
+            }  else {
+                $error = json_encode($this->error400('プロフィールが正しく更新されませんでした'));
+                $this->set('error', $error);
+            }
+        }  else {
+            $error = json_encode($this->error404('リクエストがPOSTではありません'));
+            $this->set('error', $error);
         }
         
         $profile = $this->Profile->get_user_profile($profile_id);

@@ -61,4 +61,47 @@ class AppController extends Controller {
         return $error;
     }
     
+    public function error400($description) {
+        $error = array(
+            'code' => 400,
+            'data' => array(
+                'text' => 'Bad Request',
+                'description' => $description
+            )
+        );        
+        return $error;
+    }
+    
+    public function error401($description) {
+        $error = array(
+            'code' => 401,
+            'data' => array(
+                'text' => 'Unauthorized',
+                'description' => $description
+            )
+        );        
+        return $error;
+    }
+    
+    public function error403($description) {
+        $error = array(
+            'code' => 403,
+            'data' => array(
+                'text' => 'Forbidden',
+                'description' => $description
+            )
+        );        
+        return $error;
+    }
+    
+    public function error200($description) {
+        $error = array(
+            'code' => 200,
+            'data' => array(
+                'text' => 'OK',
+                'description' => $description
+            )
+        );        
+        return $error;
+    }
 }
