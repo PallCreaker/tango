@@ -37,6 +37,7 @@ class AppController extends Controller {
     }
     
     public $components = array('DebugKit.Toolbar', 'Session');
+    public $helpers = array('Form', 'Html', 'Js', 'Time');
     
     public function error404($description) {
         $error = array(

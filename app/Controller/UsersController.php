@@ -21,7 +21,7 @@ class UsersController extends AppController {
                 $profile = array(
                     'user_id' => $user['User']['id']
                 );
-          
+
                 if ($this->Profile->save($profile)) {
                     echo 'プロフィールにもidをしまいました';
                 } else {
@@ -59,5 +59,4 @@ class UsersController extends AppController {
         $data = array('status' => 0);
         $this->User->save($data);
     }
-
 }
