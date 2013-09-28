@@ -6,11 +6,11 @@ class User extends AppModel {
     public $hasMany = array(
         'Friend' => array(
             'className' => 'Friend',
-            'foreignKey' => 'user_id',
+            'foreignKey' => array('user_id1', 'user_id2'),
             'dependent' => true
         ),
-        'List_User' => array(
-            'className' => 'List_User',
+        'ListUser' => array(
+            'className' => 'ListUser',
             'foreignKey' => 'user_id',
             'dependent' => true
         ),
