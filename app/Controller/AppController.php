@@ -47,7 +47,7 @@ class AppController extends Controller {
                 'description' => $description
             )
         );
-        return $error;
+        return json_encode($error);
     }
     
     public function error500($description) {
@@ -58,7 +58,7 @@ class AppController extends Controller {
                 'description' => $description
             )
         );        
-        return $error;
+        return json_encode($error);
     }
     
     public function error400($description) {
@@ -69,7 +69,7 @@ class AppController extends Controller {
                 'description' => $description
             )
         );        
-        return $error;
+        return json_encode($error);
     }
     
     public function error401($description) {
@@ -80,7 +80,7 @@ class AppController extends Controller {
                 'description' => $description
             )
         );        
-        return $error;
+        return json_encode($error);
     }
     
     public function error403($description) {
@@ -91,7 +91,7 @@ class AppController extends Controller {
                 'description' => $description
             )
         );        
-        return $error;
+        return json_encode($error);
     }
     
     public function error200($description) {
@@ -102,6 +102,6 @@ class AppController extends Controller {
                 'description' => $description
             )
         );        
-        return $error;
+        return json_encode($error);
     }
 }

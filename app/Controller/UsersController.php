@@ -45,12 +45,11 @@ class UsersController extends AppController {
     public function get_user($user_id = null) {
         $this->User->id = $user_id;
         if ($this->User->exists()) {
-            $user = $this->User->get_specify_user($user_id);
-            $this->set('user', json_encode($user));
+            $user = json_encode($this->User->get_specify_user($user_id));
         } else {
             $error = $this->error404('指定したidのユーザーは存在しません');
-            $this->set('error', $error);
         }
+        $this->set(compact('user', 'error'));
     }
 
     //ユーザー削除（今は、statusを0にして、削除したことにする仕様＝＞データを残す）
