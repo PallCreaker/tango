@@ -6,4 +6,5 @@ echo $this->Form->submit('Register');
 echo $this->Form->end();
 ?>
 
-<?php debug($friends);?>
+<?php echo $friend;?>
+<?php echo $error; ?>
