@@ -22,14 +22,32 @@ class FriendsController extends AppController {
 //        }
 //    }
     
-    public function get_friends($user_id = null) {
-        $this->Friend->user_id1 = $user_id;
-        if($this->request->is('post')) {
-            $friends_list = json_encode($this->Friend->get_friends_list($user_id));
-            $this->set('friends_list', $friends_list);
-        } else {
-            $error = json_encode($this->error404('指定された友達がいません'));
-            $this->set('error', $error);
-        }
+//    public function get_friends($user_id = null) {
+//        $this->Friend->user_id1 = $user_id;
+//        if($this->request->is('post')) {
+//            $friends_list = json_encode($this->Friend->get_friends_list($user_id));
+//            $this->set('friends_list', $friends_list);
+//        } else {
+//            $error = json_encode($this->error404('指定された友達がいません'));
+//            $this->set('error', $error);
+//        }
+//    }
+    
+    public function get_all_friends($user_id = NULL){
+       // $friends = json_encode($this->Friend->findAllByUser_id1OrUser_id2($user_id, array(), array('')));
+       // 
+        $friends = json_encode($this->Friend->find('all', array(
+            'conditions' => array(
+                'OR' => array(
+                    'Friend.user_id1' => $user_id,
+                    'Friend.user_id2' => $user_id
+                )
+            ),
+            //新しい友達から順番に取得
+            'order' => array(
+                'Friend.created' => 'DESC'
+            ))));
+       // debug($friends);
+        $this->set(compact('friends'));
     }
 }
