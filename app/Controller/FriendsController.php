@@ -12,25 +12,28 @@ class FriendsController extends AppController {
 
     public function add() {
         $friend = json_encode(array());
+        $error = json_encode(array());
+        $req_user1 = $this->request->data['Friend']['user_id1'];
+        $req_user2 = $this->request->data['Friend']['user_id2'];
+        
         if ($this->request->is('post')) {
-            $this->User->id = $this->request->data['Friend']['user_id1'];
+            $this->User->id = $req_user1;
             if ($this->User->exists()) {
-                $this->User->id = $this->request->data['Friend']['user_id2'];
+                $this->User->id = $req_user2;
                 if ($this->User->exists()) {
                     $friend = $this->Friend->find('first', array(
                                 'conditions' => array(
                                     'OR' => array(
                                         array(
-                                            'Friend.user_id1' => $this->request->data['Friend']['user_id1'],
-                                            'Friend.user_id2' => $this->request->data['Friend']['user_id2']
+                                            'Friend.user_id1' => $req_user1,
+                                            'Friend.user_id2' => $req_user2
                                         ),
                                         array(
-                                            'Friend.user_id1' => $this->request->data['Friend']['user_id2'],
-                                            'Friend.user_id2' => $this->request->data['Friend']['user_id1']
+                                            'Friend.user_id1' => $req_user2,
+                                            'Friend.user_id2' => $req_user1
                                         )
                                     )
                         )));
-                        debug($friend);
                     
                     if($friend == NULL) {
                         if($this->Friend->save($this->request->data)){
