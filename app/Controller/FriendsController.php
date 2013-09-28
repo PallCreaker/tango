@@ -34,8 +34,6 @@ class FriendsController extends AppController {
 //    }
     
     public function get_all_friends($user_id = NULL){
-       // $friends = json_encode($this->Friend->findAllByUser_id1OrUser_id2($user_id, array(), array('')));
-       // 
         $friends = json_encode($this->Friend->find('all', array(
             'conditions' => array(
                 'OR' => array(
@@ -47,7 +45,13 @@ class FriendsController extends AppController {
             'order' => array(
                 'Friend.created' => 'DESC'
             ))));
-       // debug($friends);
-        $this->set(compact('friends'));
+
+        if(json_decode($friends) == NULL){
+            $error = json_encode($this->error404('まだ友達はいません'));
+            $this->set(compact('error'));
+        }  else {
+            $error = json_encode($this->error200('success'));
+            $this->set(compact('friends', 'error'));
+        }
     }
 }
