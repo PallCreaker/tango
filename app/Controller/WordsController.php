@@ -28,5 +28,29 @@ class WordsController extends AppController {
 
         $this->set(compact('error', 'word'));
     }
-
+    
+    public function delete($word_id = NULL){
+        $error = json_encode(array());
+        $all_words = json_encode(array());
+        
+        if($this->request->is('get')){
+            $this->Word->id = $word_id;
+            if($this->Word->exists()){
+                if($this->Word->delete($word_id)){
+                    $error = $this->error200('success');
+                    $all_words = json_encode($this->Word->find('all', array(
+                        'recursive' => -1
+                    )));
+                } else {
+                    $error = $this->error400('データ消去に失敗しました');
+                }
+            } else {
+                $error = $this->error404('指定されたwordは存在しません');
+            }
+        } else {
+            $error = $this->error403('リクエストの形式が適切ではありません');
+        }
+        
+        $this->set(compact('error', 'all_words'));
+    }
 }
