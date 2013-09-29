@@ -2,7 +2,9 @@
 
 class ListUser extends AppModel {
     public $name = 'ListUser';
-    
+    public $useTable = 'lists_users';
+
+
     public $hasMany = array(
         //foreignKeyがよくわからん
         'User' => array(
@@ -14,8 +16,8 @@ class ListUser extends AppModel {
     
     public $belongsTo = array(
         //foreignKeyがよくわからん
-        'List' => array(
-            'className' => 'List',
+        'WordList' => array(
+            'className' => 'WordList',
             'foreignKey' => 'list_id',
             'dependent' => true
         )

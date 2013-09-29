@@ -1,12 +1,13 @@
 <?php
 
-class ListModel extends AppModel {
-    public $name = 'List';
+class WordList extends AppModel {
+    public $name = 'WordList';
+    public $useTable = 'word_lists';
     
     public $hasOne = array(
         'User' => array(
             'className' => 'User',
-            'foreignKey' => 'owner_id',
+            'foreignKey' => 'id',
             'dependent' => true
         )
     );
@@ -22,5 +23,14 @@ class ListModel extends AppModel {
             'foreignKey' => 'list_id'
         )
     );
+    
+    public function get_latest_list($list_id = NULL) {
+        $list = $this->find('first', array(
+            'conditions' => array('WordList.id' => $list_id),
+            'fields' => array('id', 'owner_id', 'title', 'description'),
+        ));
+        
+        return $list;
+    }
 
 }
