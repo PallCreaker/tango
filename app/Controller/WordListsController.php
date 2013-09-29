@@ -70,4 +70,19 @@ class WordListsController extends AppController{
         //とりあえず、すべての単語帳を返す
         $this->set(compact('error', 'all_lists'));
     }
+    
+    public function get_words($list_id = NULL) {
+        $error = json_encode(array());
+        $all_words = json_encode(array());
+        
+        if($this->request->is('get')){
+            $this->Word->list_id = $list_id;
+            $all_words = json_encode($this->Word->findAllByListId($list_id));
+            $error = $this->error200('success');
+        } else {
+            $error = $this->error403('リクエストの形式が適切ではありません');
+        }
+        
+        $this->set(compact('error', 'all_words'));
+    }
 }

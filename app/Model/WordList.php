@@ -5,11 +5,10 @@ class WordList extends AppModel {
     public $useTable = 'word_lists';
     
     public $hasOne = array(
-        
-        'User' => array(
-            'className' => 'User',
-            'foreignKey' => 'id'
-        )
+//        'User' => array(
+//            'className' => 'User',
+//            'foreignKey' => 'id'
+//        )
     );
     
     public $hasMany = array(
