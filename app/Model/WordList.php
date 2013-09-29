@@ -5,22 +5,25 @@ class WordList extends AppModel {
     public $useTable = 'word_lists';
     
     public $hasOne = array(
+        
         'User' => array(
             'className' => 'User',
-            'foreignKey' => 'id',
-            'dependent' => true
+            'foreignKey' => 'id'
         )
     );
     
     public $hasMany = array(
+        //WordListは中間テーブルListUserを持っていて、WordListが削除されるとListUserも削除される
         'ListUser' => array(
             'className' => 'ListUser',
             'foreignKey' => 'list_id',
+            'dependent' => true
         ),
-        
+        //WordListはWordをたくさん持っていて、WordListが削除されるとWordも削除される
         'Word' => array(
             'className' => 'Word',
-            'foreignKey' => 'list_id'
+            'foreignKey' => 'list_id',
+            'dependent' => true
         )
     );
     

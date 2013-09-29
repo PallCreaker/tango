@@ -9,8 +9,7 @@ class ListUser extends AppModel {
         //foreignKeyがよくわからん
         'User' => array(
             'className' => 'User',
-            'foreignKey' => 'user_id',
-            'dependent' => true
+            'foreignKey' => 'user_id'
         )
     );
     

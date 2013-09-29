@@ -42,4 +42,32 @@ class WordListsController extends AppController{
         
         return $list_data;
     }
+    
+    public function delete($list_id = NULL){
+        $error = json_encode(array());
+        $all_lists = json_encode(array());
+        
+        if($this->request->is('get')){
+            $this->WordList->id = $list_id;
+            $this->ListUser->list_id = $list_id;
+            if($this->WordList->exists() || $this->ListUser->exists()){
+                //WordList消去＝＞ListUserも消去されるはず
+                if($this->WordList->deleteAll(array('WordList.id' => $list_id))){
+                    $error = $this->error200('success');
+                    $all_lists = json_encode($this->WordList->find('all'));
+                } else {
+                    $error = $this->error400('データ消去に失敗しました');
+                    $all_lists = json_encode($this->WordList->find('all'));
+                }
+            } else {
+                $error = $this->error404('指定された単語帳は存在しません');
+                $all_lists = json_encode($this->WordList->find('all'));
+            }
+        } else {
+            $error = $this->error403('リクエストの形式が適切ではありません');
+            $all_lists = json_encode($this->WordList->find('all'));
+        }
+        //とりあえず、すべての単語帳を返す
+        $this->set(compact('error', 'all_lists'));
+    }
 }
