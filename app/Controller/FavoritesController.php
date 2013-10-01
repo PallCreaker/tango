@@ -21,7 +21,7 @@ class FavoritesController extends AppController {
                             'Favorite.word_id' => $this->request->data['Favorite']['word_id']
                         ),
                         'recursive' => -1
-                        )
+                            )
                     );
 
                     if ($already_favorite == NULL) {
@@ -46,6 +46,43 @@ class FavoritesController extends AppController {
         }
 
         $this->set(compact('error', 'favorite'));
+    }
+
+    public function delete($user_id = NULL, $word_id = NULL) {
+        $error = json_encode(array());
+        $favorite_list = json_encode($this->Favorite->findAllByUserId($user_id, NULL, NULL, -1));
+
+        if ($this->request->is('get')) {
+            $this->User->id = $user_id;
+            if ($this->User->exists()) {
+                $this->Word->id = $word_id;
+                if ($this->Word->exists()) {
+                    $req_favorite = $this->Favorite->find('first', array(
+                        'conditions' => array(
+                            'user_id' => $user_id,
+                            'word_id' => $word_id
+                        ),
+                        'recursive' => -1
+                    ));
+                    
+                    if($req_favorite != NULL){
+                        $this->Favorite->delete($req_favorite['Favorite']['id']);
+                        $error = $this->error200('お気に入り登録をキャンセルしました');
+                        $favorite_list = json_encode($this->Favorite->findAllByUserId($user_id, NULL, NULL, -1));
+                    } else {
+                        $error = $this->error403('お気に入り登録されていません');
+                    }
+                } else {
+                    $error = $this->error404('指定された単語は存在しません');
+                }
+            } else {
+                $error = $this->error404('指定されたユーザーは存在しません');
+            }
+        } else {
+            $error = $this->error403('リクエストの形式が適切ではありません');
+        }
+
+        $this->set(compact('error', 'favorite_list'));
     }
 
 }
