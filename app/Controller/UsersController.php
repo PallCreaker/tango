@@ -68,8 +68,27 @@ class UsersController extends AppController {
     }
     //ユーザー削除（今は、statusを0にして、削除したことにする仕様＝＞データを残す）
     public function delete($user_id = null) {
-        $this->User->id = $user_id;
-        $data = array('status' => 0);
-        $this->User->save($data);
+       $error = json_encode(array());
+       $users = json_encode(array());
+        
+        if($this->request->is('get')){
+            $this->User->id = $user_id;
+            if($this->User->exists()){
+                if($this->User->delete($user_id)){
+                    $error = $this->error200('ユーザーデータを消去しました');
+                    $users = json_encode($this->User->find('all', array(
+                        'recursive' => -1
+                    )));
+                } else {
+                    $error = $this->error400('データ消去に失敗しました');
+                }
+            } else {
+                $error = $this->error404('指定されたuserは存在しません');
+            }
+        } else {
+            $error = $this->error403('リクエストの形式が適切ではありません');
+        }
+        
+        $this->set(compact('error', 'users'));
     }
 }
