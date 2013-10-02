@@ -1,7 +1,2 @@
-<?php
-if($user != null) {
-    echo $user;
-} else {
-    echo $error;
-}
-?>
+<?php echo $user;?>
+<?php echo $error;?>

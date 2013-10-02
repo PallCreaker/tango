@@ -45,16 +45,27 @@ class UsersController extends AppController {
     }
 
     //特定のユーザー情報を返す
-    public function get_user($user_id = null) {
-        $this->User->id = $user_id;
-        if ($this->User->exists()) {
-            $user = json_encode($this->User->get_specify_user($user_id));
+    public function get_user($user_id = NULL){
+        $error = json_encode(array());
+        $user = json_encode(array());
+        
+        if($this->request->is('get')){
+            $this->User->id = $user_id;
+            if($this->User->exists()){
+                $error = $this->error200('指定されたユーザーデータです');
+                $user = json_encode($this->User->find('first', array(
+                    'conditions' => array('id' => $user_id),
+                    'recursive' => -1
+                )));
+            } else {
+                $error = $this->error404('指定されたユーザーは存在しません');
+            }
         } else {
-            $error = $this->error404('指定したidのユーザーは存在しません');
+            $error = $this->error403('リクエスト形式が適切ではありません');
         }
-        $this->set(compact('user', 'error'));
+        
+        $this->set(compact('error', 'user'));
     }
-
     //ユーザー削除（今は、statusを0にして、削除したことにする仕様＝＞データを残す）
     public function delete($user_id = null) {
         $this->User->id = $user_id;
