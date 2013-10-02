@@ -79,5 +79,26 @@ class FriendsController extends AppController {
             $this->set(compact('friends', 'error'));
         }
     }
-
+    
+    public function get_a_friend($user_id = NULL){
+        $error = json_encode(array());
+        $friend = json_encode(array());
+        
+        if($this->request->is('get')){
+            $this->User->id = $user_id;
+            if($this->User->exists()){
+                $error = $this->error200('指定された友達のデータです');
+                $friend = json_encode($this->User->find('first', array(
+                    'conditions' => array('id' => $user_id),
+                    'recursive' => -1
+                )));
+            } else {
+                $error = $this->error404('指定されたユーザーは存在しません');
+            }
+        } else {
+            $error = $this->error403('リクエスト形式が適切ではありません');
+        }
+        
+        $this->set(compact('error', 'friend'));
+    }
 }
