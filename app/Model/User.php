@@ -43,4 +43,17 @@ class User extends AppModel {
 
         return $user;
     }
+    
+    public function user_already($username = NULL) {
+        $user = $this->find('first', array(
+            'conditions' => array('User.username' => $username),
+            'recursive' => -1
+        ));
+        
+        if($user == NULL){
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

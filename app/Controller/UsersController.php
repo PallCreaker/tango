@@ -12,33 +12,36 @@ class UsersController extends AppController {
 
     //JSON型のデータをデコードして登録＝＞そのユーザーの情報をJSONで返す
     public function register() {
+        $error = json_encode(array());
+        $user = json_encode(array());
+        
         if ($this->request->is('post')) {
             $this->request->data['User']['password'] = hash('md5', $this->request->data['User']['password']);
-            if ($this->User->save($this->request->data)) {
+            if($this->User->user_already($this->request->data['User']['username']) == false){
+                if ($this->User->save($this->request->data)) {
                 //登録したユーザーの情報を配列で返す
-                $user = $this->User->get_specify_user($this->User->getLastInsertID());
+                $user = json_encode($this->User->get_specify_user($this->User->getLastInsertID()));
                 //ユーザーIDをprofilesにしまう
                 $profile = array(
-                    'user_id' => $user['User']['id']
+                    'user_id' => $this->User->getLastInsertId()
                 );
 
                 if ($this->Profile->save($profile)) {
-                    echo 'プロフィールにもidをしまいました';
+                    $error = $this->error200('ユーザー登録が完了しました');
                 } else {
-                    echo 'プロフィールにidをしまうのをみすりました';
-                }
-                //最後にユーザー情報をJSONで返す
-                if ($user != null) {
-                    $this->set('user', json_encode($user));
-                } else {
-                    echo '$userが空です';
+                    $error = $this->error400('ユーザー登録に失敗しました');
                 }
             } else {
-                echo 'ユーザー情報を保存できませんでした';
+                $error = $this->error400('ユーザー登録に失敗しました');
+            }
+            } else {
+                $error = $this->error403('そのユーザー名は既に使用されています');
             }
         } else {
-            echo 'リクエストがPOSTではありません';
+            $error = $this->error403('リクエストの形式が適切ではありません');
         }
+        
+        $this->set(compact('error', 'user'));
     }
 
     //特定のユーザー情報を返す

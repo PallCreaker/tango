@@ -7,4 +7,5 @@ echo $this->Form->submit('submit');
 echo $this->Form->end();
 ?>
 
-<?php debug($user);?>
+<?php echo $user;?>
+<?php echo $error;?>
