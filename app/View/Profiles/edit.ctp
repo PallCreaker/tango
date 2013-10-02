@@ -1,8 +1,8 @@
 
 <?php
 
-echo $this->Form->create('Profile', array('action' => 'edit'));
-echo $this->Form->input('user_id', array('type' => 'hidden', 'default' => $profile['Profile']['user_id']));
+echo $this->Form->create('Profile', array('action' => 'edit/'.$profile_array['Profile']['user_id']));
+//echo $this->Form->input('user_id', array('type' => 'hidden', 'default' => $profile_array['Profile']['user_id']));
 echo $this->Form->label('color_id', 'color_idを指定してください');
 echo $this->Form->select('color_id',
         array(
@@ -25,5 +25,5 @@ echo $this->Form->submit('Edit');
 echo $this->Form->end();
 ?>
 
-<?php debug($profile); ?>
-<?php debug($error); ?>
+<?php echo $profile; ?>
+<?php echo $error; ?>
