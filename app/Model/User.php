@@ -4,11 +4,6 @@ class User extends AppModel {
 
     public $name = 'User';
     public $hasMany = array(
-//        'Friend' => array(
-//            'className' => 'Friend',
-//            'foreignKey' => array('user_id1', 'user_id2'),
-//            'dependent' => true
-//        ),
         'ListUser' => array(
             'className' => 'ListUser',
             'foreignKey' => 'user_id',
@@ -30,6 +25,22 @@ class User extends AppModel {
             'className' => 'Profile',
             'foreignKey' => 'user_id',
             'dependent' => true
+        )
+    );
+    public $validate = array(
+        'username' => array(
+            'notEmpty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'IDは必須です'
+            ),
+            'isUnique' => array(
+                'rule' => 'isUnique',
+                'message' => 'このIDは使われています'
+            ),
+            'between' => array(
+                'rule' => array('between', 1, 15),
+                'message' => 'IDは15文字以内です。'
+            )
         )
     );
 
@@ -67,7 +78,7 @@ class User extends AppModel {
         $profile = array(
             'user_id' => $user_id
         );
-        
+
         return $profile;
     }
 
