@@ -13,14 +13,12 @@ class UsersController extends AppController {
         
         if ($this->request->is('post')) {
             $this->request->data['User']['password'] = $this->User->hash_password($this->request->data['User']['password']);
-            if($this->User->user_already($this->request->data['User']['username']) == false){
+            if(!$this->User->username_already_used($this->request->data['User']['username'])){
                 if ($this->User->save($this->request->data)) {
                 //登録したユーザーの情報を配列で返す
                 $user = json_encode($this->User->get_specify_user($this->User->getLastInsertID()));
                 //ユーザーIDをprofilesにしまう
-                $profile = array(
-                    'user_id' => $this->User->getLastInsertId()
-                );
+                $profile = $this->User->make_profile($this->User->getLastInsertID());
 
                 if ($this->Profile->save($profile)) {
                     $error = $this->error200('ユーザー登録が完了しました');

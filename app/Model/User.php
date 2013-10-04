@@ -44,22 +44,31 @@ class User extends AppModel {
 
         return $user;
     }
-    
-    public function user_already($username = NULL) {
+
+    public function hash_password($req_password = NULL) {
+        $hashed_password = hash('md5', $req_password);
+        return $hashed_password;
+    }
+
+    public function username_already_used($req_username = NULL) {
         $user = $this->find('first', array(
-            'conditions' => array('User.username' => $username),
+            'conditions' => array('User.username' => $req_username),
             'recursive' => -1
         ));
-        
-        if($user == NULL){
+
+        if ($user == NULL) {
             return false;
         } else {
             return true;
         }
     }
-    
-    public function hash_password($req_password = NULL){
-        $hashed_password = hash('md5', $req_password);
-        return $hashed_password;
+
+    public function make_profile($user_id = NULL) {
+        $profile = array(
+            'user_id' => $user_id
+        );
+        
+        return $profile;
     }
+
 }
