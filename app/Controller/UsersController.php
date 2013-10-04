@@ -6,17 +6,13 @@ class UsersController extends AppController {
     public $uses = array('User', 'Profile');
     public $layout = 'json';
 
-    public function beforeFilter() {
-        parent::beforeFilter();
-    }
-
     //JSON型のデータをデコードして登録＝＞そのユーザーの情報をJSONで返す
     public function register() {
         $error = json_encode(array());
         $user = json_encode(array());
         
         if ($this->request->is('post')) {
-            $this->request->data['User']['password'] = hash('md5', $this->request->data['User']['password']);
+            $this->request->data['User']['password'] = $this->User->hash_password($this->request->data['User']['password']);
             if($this->User->user_already($this->request->data['User']['username']) == false){
                 if ($this->User->save($this->request->data)) {
                 //登録したユーザーの情報を配列で返す

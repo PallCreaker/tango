@@ -33,12 +33,13 @@ class User extends AppModel {
         )
     );
 
-    public function get_specify_user($user_id) {
+    //user_idの
+    public function get_specify_user($user_id = NULL) {
         $user = $this->find('first', array(
             'conditions' => array('User.id' => $user_id),
             'fields' => array('id', 'username', 'screen_name'),
             //ProfileはhasOneなテーブル
-            'recursive' => 0
+            'recursive' => -1
         ));
 
         return $user;
@@ -55,5 +56,10 @@ class User extends AppModel {
         } else {
             return true;
         }
+    }
+    
+    public function hash_password($req_password = NULL){
+        $hashed_password = hash('md5', $req_password);
+        return $hashed_password;
     }
 }
