@@ -27,22 +27,6 @@ class User extends AppModel {
             'dependent' => true
         )
     );
-    public $validate = array(
-        'username' => array(
-            'notEmpty' => array(
-                'rule' => 'notEmpty',
-                'message' => 'IDは必須です'
-            ),
-            'isUnique' => array(
-                'rule' => 'isUnique',
-                'message' => 'このIDは使われています'
-            ),
-            'between' => array(
-                'rule' => array('between', 1, 15),
-                'message' => 'IDは15文字以内です。'
-            )
-        )
-    );
 
     //user_idの
     public function get_specify_user($user_id = NULL) {
